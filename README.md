@@ -6,6 +6,11 @@ If you want to compile firmware without any modules you can also use the [main q
 
 If the keyboard has not been merged yet to the main branch of QMK you may need to edit the workflow, for that see [Extra info](#extra-info)
 
+## TheJP Useful Commands
+
+* `qmk userspace-compile`
+* `qmk compile -km thejp -e HLC_TFT_DISPLAY=1`
+
 ## Howto configure your build targets
 
 1. Run the normal `qmk setup` procedure if you haven't already done so -- see [QMK Docs](https://docs.qmk.fm/#/newbs) for details.

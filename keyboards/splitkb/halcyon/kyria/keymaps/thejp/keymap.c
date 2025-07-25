@@ -3,6 +3,7 @@
 
 #include QMK_KEYBOARD_H
 #include "keymap_swiss_de.h"
+#include "jp_util.h"
 
 enum layers {
     _COLEMAK = 0,
@@ -31,7 +32,8 @@ enum custom_keycodes {
 #define COLEMAK  DF(_COLEMAK)
 #define DVORAK   DF(_DVORAK)
 
-#define SHIFT    LM(_SHIFT, MOD_LSFT)
+#define LSHIFT   LM(_SHIFT, MOD_LSFT)
+#define RSHIFT   LM(_SHIFT, MOD_RSFT)
 #define SYM      MO(_SYM)
 #define NUM      MO(_NUM)
 #define NAV      MO(_NAV)
@@ -42,6 +44,7 @@ enum custom_keycodes {
 #define CTL_QUOT MT(MOD_RCTL, CH_QUOT)
 #define CTL_MINS MT(MOD_RCTL, CH_MINS)
 #define ALT_ENT  MT(MOD_LALT, KC_ENT)
+#define CTL_SPC  MT(MOD_LCTL, KC_SPC)
 #define NAV_ENT  LT(_NAV, KC_ENT)
 
 // clang-format off
@@ -65,9 +68,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [_COLEMAK] = LAYOUT_split_3x6_5_hlc(
     KC_TAB ,  CH_Q  , CH_W   ,  CH_F  ,   CH_P ,  CH_G  ,                                      CH_J  ,  CH_L  ,  CH_U  ,  CH_Y  , CH_SCLN, KC_BSPC ,
-    SHIFT  ,  CH_A  , CH_R   ,  CH_S  ,   CH_T ,  CH_D  ,                                      CH_H  ,  CH_N  ,  CH_E  ,  CH_I  ,  CH_O  , SHIFT   ,
+    LSHIFT ,  CH_A  , CH_R   ,  CH_S  ,   CH_T ,  CH_D  ,                                      CH_H  ,  CH_N  ,  CH_E  ,  CH_I  ,  CH_O  , RSHIFT  ,
     CTL_ESC,  CH_Z  , CH_X   ,  CH_C  ,   CH_V ,  CH_B  , NAV , FKEYS ,     ADJUST , KC_NO  ,  CH_K  ,  CH_M  , CH_COMM, CH_DOT , CH_SLSH, CTL_QUOT,
-                               KC_LALT, KC_LGUI,  NUM   , SYM , KC_SPC,     KC_SPC , NAV_ENT, KC_RALT, KC_APP , MS_BTN1,
+                               KC_LALT, KC_LGUI,  NUM   , SYM , KC_SPC,     CTL_SPC, NAV_ENT, KC_RALT, KC_APP , MS_BTN1,
     KC_MUTE,  KC_NO ,  KC_NO ,  KC_NO ,  KC_NO ,                                                   JP_ENC_TOGG,  KC_NO ,  KC_NO ,  KC_NO ,  KC_NO
 ),
 
@@ -81,19 +84,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
  * |Ctrl/Esc|   Y  |   X  |   C  |   V  |   B  | Nav  |F-Keys|  |Adjust|  ??? |   N  |   M  | ,  ; | .  : | /  ? | Ctrl/' |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        | LAlt | LGUI | NUM  | Sym  | Space|  | Space| Enter| AltGr| Menu | ???  |
- *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        | LAlt | LGUI | NUM  | Sym  | Space|  | Space| Nav/ | AltGr| Menu |LClick|
+ *                        |      |      |      |      |      |  |      | Enter|      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  *   ,----------------------------------.                                            ,----------------------------------.
- *   | MUTE |      |      |      |      |                                            | MUTE |      |      |      |      |
+ *   | MUTE |      |      |      |      |                                            |EncTog|      |      |      |      |
  *   `----------------------------------'                                            `----------------------------------'
  */
 [_QWERTZ] = LAYOUT_split_3x6_5_hlc(
-    KC_TAB  , CH_Q ,  CH_W   , CH_E   ,   CH_R ,   CH_T ,                                     CH_Z,   CH_U ,  CH_I ,   CH_O ,    CH_P , KC_BSPC,
-    KC_LSFT , CH_A ,  CH_S   , CH_D   ,   CH_F ,   CH_G ,                                     CH_H,   CH_J ,  CH_K ,   CH_L , CH_SCLN , KC_RSFT,
-    CTL_ESC , CH_Y ,  CH_X   , CH_C   ,   CH_V ,   CH_B , NAV , FKEYS ,     ADJUST , CH_RBRC, CH_N,   CH_M ,CH_COMM, CH_DOT , CH_SLSH , CTL_QUOT,
-                               KC_LALT, KC_LGUI,   NUM  , SYM , KC_SPC,     KC_SPC , KC_ENT , KC_RALT, KC_APP, CH_RBRC,
-    KC_MUTE, KC_NO,  KC_NO, KC_NO, KC_NO,                                                             KC_MUTE, KC_NO, KC_NO, KC_NO, KC_NO
+    KC_TAB  , CH_Q ,  CH_W   , CH_E   ,   CH_R ,   CH_T ,                                     CH_Z   ,   CH_U , CH_I   ,   CH_O,    CH_P, KC_BSPC ,
+    LSHIFT  , CH_A ,  CH_S   , CH_D   ,   CH_F ,   CH_G ,                                     CH_H   ,   CH_J , CH_K   ,   CH_L, CH_SCLN, RSHIFT  ,
+    CTL_ESC , CH_Y ,  CH_X   , CH_C   ,   CH_V ,   CH_B , NAV , FKEYS ,     ADJUST , KC_NO  , CH_N   ,   CH_M , CH_COMM, CH_DOT, CH_SLSH, CTL_QUOT,
+                               KC_LALT, KC_LGUI,   NUM  , SYM , KC_SPC,     CTL_SPC, NAV_ENT, KC_RALT, KC_APP , MS_BTN1,
+    KC_MUTE,  KC_NO ,  KC_NO ,  KC_NO ,  KC_NO ,                                                   JP_ENC_TOGG, KC_NO  , KC_NO , KC_NO  , KC_NO
 ),
 
 // TODO: Didn't touch Dvorak yet
@@ -128,9 +131,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-------------------------------------------.                              ,-------------------------------------------.
  * |        |      |      |      |      |      |                              |      |      |      |      | ;  : | S(Del) |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |      |      |      |      |      |                              |      |      |      |      |      | RShift |
+ * |        |      |      |      |      |      |                              |      |      |      |      |      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |Ctrl/Esc|      |      |      |      |      |      |      |  |      |      |      |      | ,  ; | .  : | /  ? | Ctrl/' |
+ * |        |      |      |      |      |      |      |      |  |      |      |      |      | ,  ; | .  : | /  ? | Ctrl/' |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -142,7 +145,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 [_SHIFT] = LAYOUT_split_3x6_5_hlc(
     _______, _______, _______, _______, _______, _______,                                         _______, _______, _______, _______, CH_COLN, KC_DEL  ,
     _______, _______, _______, _______, _______, _______,                                         _______, _______, _______, _______, _______, _______ ,
-    CTL_ESC, _______, _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, CH_SCLN, CH_COLN, CH_QUES, CTL_QUOT,
+    _______, _______, _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, CH_SCLN, CH_COLN, CH_QUES, CTL_QUOT,
                                _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______,
     _______, _______, _______, _______, _______,                                                           _______, _______, _______, _______, _______
 ),
@@ -151,13 +154,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Sym Layer: Symbols (missing: ç, ¬, ´)
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |    ~   |   !  |   @  |   #  |   %  |   $  |                              |   _  |   &  |   *  |      |   `  |   "    |
+ * |    ~   |   !  |   @  |   #  |   %  |   $  |                              |   _  |   &  |   "  |   '  |   `  |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * | LShift |   ^  |   <  |   [  |   (  |   {  |                              |   }  |   )  |   ]  |   >  |   =  | RShift |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |   \  |  :   |  ;   |   ä  |   ö  |      |      |  |      |      |   ü  |   |  | ,  ; | .  : | /  ? | Ctrl/' |
+ * |        |   \  |   ü  |   ö  |   ä  |      |      |      |  |      |EncTog|      |   |  | ,  ; | .  : | /  ? | Ctrl/' |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |      |      |RClick|
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  *   ,----------------------------------.                                            ,----------------------------------.
@@ -165,9 +168,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *   `----------------------------------'                                            `----------------------------------'
  */
 [_SYM] = LAYOUT_split_3x6_5_hlc(
-    CH_TILD, CH_EXLM, CH_AT  , CH_HASH, CH_PERC, CH_DLR ,                                            CH_UNDS, CH_AMPR, CH_ASTR, _______, CH_GRV , CH_DQUO,
-    KC_LSFT, CH_CIRC, CH_LABK, CH_LBRC, CH_LPRN, CH_LCBR,                                            CH_RCBR, CH_RPRN, CH_RBRC, CH_RABK, CH_EQL , KC_RSFT,
-    _______, CH_BSLS, CH_COLN, CH_SCLN, CH_ADIA, CH_ODIA, _______, _______,    _______, JP_ENC_TOGG, CH_UDIA, CH_PIPE, CH_COMM, CH_DOT , CH_SLSH, CH_QUOT,
+    CH_TILD, CH_EXLM, CH_AT  , CH_HASH, CH_PERC, CH_DLR ,                                            CH_UNDS, CH_AMPR, CH_DQUO, CH_QUOT, CH_GRV , _______ ,
+    KC_LSFT, CH_CIRC, CH_LABK, CH_LBRC, CH_LPRN, CH_LCBR,                                            CH_RCBR, CH_RPRN, CH_RBRC, CH_RABK, CH_EQL , KC_RSFT ,
+    _______, CH_BSLS, CH_UDIA, CH_ODIA, CH_ADIA, _______, _______, _______,    _______, JP_ENC_TOGG, _______, CH_PIPE, CH_COMM, CH_DOT , CH_QUES, CTL_QUOT,
                                _______, _______, _______, _______, _______,    _______,   _______  , _______, _______, MS_BTN2,
     _______, _______, _______, _______, _______,                                                              _______, _______, _______, _______, _______
 ),
@@ -176,13 +179,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * Num Layer: Numbers
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |   §  |  °   |  £   |  €   |  $   |                              |   +  |  7   |  8   |  9   |  %   |        |
+ * |        |   §  |  °   |  £   |  €   |  $   |                              |  +   |  7   |  8   |  9   |  :   |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        | C(¨) |  ¨   |      |  =   | C(§) |                              |   -  |  4   |  5   |  6   |  *   |        |
+ * |        |  GUI |  Alt | Shift| Ctrl |  ¨   |                              |  -   |  4   |  5   |  6   |  *   |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        |   \  |      |      |      |      |      |      |  |      |      |   0  |  1   |  2   |  3   |  /   |        |
+ * |        |   \  |      |      | C(§) |  =   |      |      |  |      |      |  0   |  1   |  2   |  3   |  /   |        |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
- *                        |      |      |      |      |      |  |      |      |      |      |      |
+ *                        |      |      |      |      |      |  |      |      |  .   |      |MClick|
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        `----------------------------------'  `----------------------------------'
  *   ,----------------------------------.                                            ,----------------------------------.
@@ -190,24 +193,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *   `----------------------------------'                                            `----------------------------------'
  */
  // Used to comment in some IDEs: C(§) == C(CH_SECT)
- // Used to open terminal in some IDEs: C(¨) == C(CH_DIAE)
 [_NUM] = LAYOUT_split_3x6_5_hlc(
-    _______,   CH_SECT , CH_DEG , CH_PND , CH_EURO,   CH_DLR  ,                                        CH_PLUS,   CH_7 ,   CH_8 ,   CH_9 , CH_PERC, _______,
-    _______, C(CH_DIAE), CH_DIAE, _______, CH_EQL , C(CH_SECT),                                        CH_MINS,   CH_4 ,   CH_5 ,   CH_6 , CH_ASTR, _______,
-    _______,   CH_BSLS , _______, _______, _______,   _______ , _______, _______,    _______, _______,   CH_0 ,   CH_1 ,   CH_2 ,   CH_3 , CH_SLSH, _______,
-                                  _______, _______,   _______ , _______, _______,    _______, _______, _______, _______, MS_BTN3,
-    _______,   _______ , _______, _______, _______,                                                             _______, _______, _______, _______, _______
+    _______, CH_SECT, CH_DEG , CH_PND ,   CH_EURO , CH_DLR ,                                        CH_PLUS,   CH_7 ,   CH_8 ,   CH_9 , CH_COLN, _______,
+    _______, KC_LGUI, KC_LALT, KC_LSFT,   KC_LCTL , CH_DIAE,                                        CH_MINS,   CH_4 ,   CH_5 ,   CH_6 , CH_ASTR, _______,
+    _______, CH_BSLS, _______, _______, C(CH_SECT), CH_EQL , _______, _______,    _______, _______, CH_0   ,   CH_1 ,   CH_2 ,   CH_3 , CH_SLSH, _______,
+                               _______,   _______ , _______, _______, _______,    _______, _______, CH_DOT , _______, MS_BTN3,
+    _______, _______, _______, _______,   _______ ,                                                          _______, _______, _______, _______, _______
 ),
 
 /*
  * Nav Layer: Media, navigation
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |      |      |      |      |                              | Home | PgUp |   ↑  | PgDn | VolUp| Delete |
+ * |        |      | VolUp|VolMut| VolDn|      |                              | Home | PgUp |   ↑  | PgDn | C(¨) | Delete |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
- * |        |  GUI |  Alt | Shift| Ctrl |      |                              | End  |  ←   |   ↓  |   →  | VolDn| Insert |
+ * |        |  GUI |  Alt | Shift| Ctrl |      |                              | End  |  ←   |   ↓  |   →  |      | Insert |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
- * |        | Pause|M Prev|M Play|M Next|      |      |ScLck |  |      |      |      | ←GUI |      | GUI→ |VolMut| PrtSc  |
+ * |        | Pause|M Prev|M Play|M Next|      |      |ScLck |  |      |      |      | ←GUI |      | GUI→ |      | PrtSc  |
  * `----------------------+------+------+------+------+------|  |------+------+------+------+------+----------------------'
  *                        |      |      |      |      |      |  |      |      |      |      |      |
  *                        |      |      |      |      |      |  |      |      |      |      |      |
@@ -216,19 +218,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *   |      |      |      |      |      |                                            |      |      |      |      |      |
  *   `----------------------------------'                                            `----------------------------------'
  */
+ // Used to open terminal in some IDEs: C(¨) == C(CH_DIAE)
 [_NAV] = LAYOUT_split_3x6_5_hlc(
-    _______, _______ , _______, _______, _______, _______,                                        KC_HOME,     KC_PGUP , KC_UP  ,     KC_PGDN , KC_VOLU, KC_DEL,
-    _______, KC_LGUI , KC_LALT, KC_LSFT, KC_LCTL, _______,                                        KC_END ,     KC_LEFT , KC_DOWN,     KC_RGHT , KC_VOLD, KC_INS,
-    _______, KC_PAUSE, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______, _______,    _______, _______, _______, LCG(KC_LEFT), _______, LCG(KC_RGHT), KC_MUTE, KC_PSCR,
+    _______, _______ , KC_VOLU, KC_MUTE, KC_VOLD, _______,                                        KC_HOME,     KC_PGUP , KC_UP  ,     KC_PGDN , C(CH_DIAE), KC_DEL,
+    _______, KC_LGUI , KC_LALT, KC_LSFT, KC_LCTL, _______,                                        KC_END ,     KC_LEFT , KC_DOWN,     KC_RGHT ,   _______ , KC_INS,
+    _______, KC_PAUSE, KC_MPRV, KC_MPLY, KC_MNXT, _______, _______, _______,    _______, _______, _______, LCG(KC_LEFT), _______, LCG(KC_RGHT),   _______ , KC_PSCR,
                                 _______, _______, _______, _______, _______,    _______, _______, _______,     _______ , _______,
-    _______, _______ , _______, _______, _______,                                                              _______ , _______,     _______ , _______, _______
+    _______, _______ , _______, _______, _______,                                                              _______ , _______,     _______ ,   _______ , _______
 ),
 
 /*
  * Function Layer: Function keys
  *
  * ,-------------------------------------------.                              ,-------------------------------------------.
- * |        |      |      |      |      |      |                              |  F12 |  F7  |  F8  |  F9  |      |        |
+ * |        |      |Alt+F4|      | C(F4)|      |                              |  F12 |  F7  |  F8  |  F9  |      |        |
  * |--------+------+------+------+------+------|                              |------+------+------+------+------+--------|
  * |        |  GUI |  Alt | Shift| Ctrl |      |                              |  F11 |  F4  |  F5  |  F6  |      |        |
  * |--------+------+------+------+------+------+-------------.  ,-------------+------+------+------+------+------+--------|
@@ -242,11 +245,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *   `----------------------------------'                                            `----------------------------------'
  */
 [_FUNCTION] = LAYOUT_split_3x6_5_hlc(
-    _______, _______, _______, _______, _______, _______,                                        KC_F12 ,  KC_F7 ,  KC_F8 ,  KC_F9 , _______, _______,
-    _______, KC_LGUI, KC_LALT, KC_LSFT, KC_LCTL, _______,                                        KC_F11 ,  KC_F4 ,  KC_F5 ,  KC_F6 , _______, _______,
-    _______, _______, _______, _______, _______, _______, _______, _______,    _______, _______, KC_F10 ,  KC_F1 ,  KC_F2 ,  KC_F3 , _______, _______,
-                               _______, _______, _______, _______, _______,    _______, _______, _______, _______, _______,
-    _______, _______, _______, _______, _______,                                                          _______, _______, _______, _______, _______
+    _______, _______, A(KC_F4), _______, C(KC_F4), _______,                                        KC_F12 ,  KC_F7 ,  KC_F8 ,  KC_F9 , _______, _______,
+    _______, KC_LGUI,  KC_LALT, KC_LSFT,  KC_LCTL, _______,                                        KC_F11 ,  KC_F4 ,  KC_F5 ,  KC_F6 , _______, _______,
+    _______, _______,  _______, _______,  _______, _______, _______, _______,    _______, _______, KC_F10 ,  KC_F1 ,  KC_F2 ,  KC_F3 , _______, _______,
+                                _______,  _______, _______, _______, _______,    _______, _______, _______, _______, _______,
+    _______, _______,  _______, _______,  _______,                                                          _______, _______, _______, _______, _______
 ),
 
 /*
@@ -328,8 +331,33 @@ enum encoder_modes {
     ENC_START = 0,
 };
 
+enum jp_rgb_effects {
+    EFFECT_OFF = 0,
+    EFFECT_CUSTOM,
+    EFFECT_UNDERGLOW,
+
+    EFFECT_END,
+    EFFECT_START = 0,
+};
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     static enum encoder_modes encoder = ENC_SCROLL;
+    static enum jp_rgb_effects effect = EFFECT_END;
+    if (effect == EFFECT_END) {
+        switch (rgb_matrix_get_mode()) {
+            case RGB_MATRIX_CUSTOM_THEJP:
+                effect = EFFECT_CUSTOM;
+                break;
+            case RGB_MATRIX_CUSTOM_THEJP_UNDERGLOW:
+                effect = EFFECT_UNDERGLOW;
+                break;
+            case RGB_MATRIX_CUSTOM_OFF:
+            default:
+                effect = EFFECT_OFF;
+                break;
+        }
+    }
+
     uint8_t mod_state = get_mods();
 
     switch (keycode) {
@@ -338,6 +366,34 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case QK_MOUSE_WHEEL_LEFT:
         case QK_MOUSE_WHEEL_RIGHT:
         {
+            if (layer_state_is(_ADJUST)) {
+                if (record->event.pressed) {
+                    int8_t direction = keycode == QK_MOUSE_WHEEL_DOWN || keycode == QK_MOUSE_WHEEL_RIGHT ? 1 : -1;
+                    if (direction < 0 && effect <= EFFECT_START) {
+                        effect = EFFECT_END;
+                    }
+                    effect += direction;
+                    if (effect >= EFFECT_END) {
+                        effect = EFFECT_START;
+                    }
+
+                    rgb_matrix_sethsv(0, 0, rgb_matrix_get_val()); // Set to white, while keeping brightness.
+                    switch (effect) {
+                        case EFFECT_OFF:
+                            rgb_matrix_mode(RGB_MATRIX_CUSTOM_OFF);
+                            break;
+                        case EFFECT_UNDERGLOW:
+                            rgb_matrix_mode(RGB_MATRIX_CUSTOM_THEJP_UNDERGLOW);
+                            break;
+                        case EFFECT_CUSTOM:
+                        default:
+                            rgb_matrix_mode(RGB_MATRIX_CUSTOM_THEJP);
+                            break;
+                    }
+                }
+                return false;
+            }
+
             switch (encoder) {
                 case ENC_SCROLL:
                     break;
@@ -382,7 +438,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             }
             return false;
         case CH_CIRC:
-        case CH_DIAE:
+        // case CH_DIAE: // keep as dead key
         case CH_GRV:
         case CH_ACUT:
         case CH_TILD:
@@ -394,7 +450,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         case CH_ADIA:
         case CH_ODIA:
         case CH_UDIA:
-            if ((mod_state & MOD_MASK_SHIFT) && layer_state_is(_SYM)) {
+            if (((mod_state & MOD_MASK_SHIFT) && layer_state_is(_SYM)) || is_caps_word_on()) {
                 if (record->event.pressed) {
                     clear_mods();
                     tap_code(CH_DIAE);
@@ -411,21 +467,10 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     return true;
 }
 
-static rgb_t adjusted_colour(hsv_t colour) {
-    if (colour.v > rgb_matrix_get_val()) {
-        colour.v = rgb_matrix_get_val();
-    }
-    return hsv_to_rgb(colour);
-}
-
-static void jp_rbg_matrix_set(int index, rgb_t colour) {
-    rgb_matrix_set_color(index, colour.r, colour.g, colour.b);
-}
-
 bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
-    rgb_t rgb_green = adjusted_colour((hsv_t){HSV_GREEN});
-    rgb_t rgb_blue = adjusted_colour((hsv_t){HSV_BLUE});
-    rgb_t rgb_purple = adjusted_colour((hsv_t){195, 255, 130});
+    rgb_t rgb_green = jp_adjusted_colour((hsv_t){HSV_GREEN});
+    rgb_t rgb_blue = jp_adjusted_colour((hsv_t){HSV_BLUE});
+    rgb_t rgb_purple = jp_adjusted_colour((hsv_t){195, 255, 130});
 
     uint8_t layer = get_highest_layer(layer_state);
     if (layer < _BASE_LAYER_END) {
@@ -438,7 +483,7 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
             if (index < led_min || index >= led_max || index == NO_LED) {
                 continue;
             }
-            
+
             uint16_t key = keymap_key_to_keycode(layer, (keypos_t){col,row});
             switch (key) {
                 case KC_NO:
@@ -454,12 +499,18 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
                 case KC_LALT:
                 case KC_LSFT:
                 case KC_LCTL:
+                case KC_RGUI:
+                case KC_RALT:
+                case KC_RSFT:
+                case KC_RCTL:
                     jp_rbg_matrix_set(index, rgb_green);
                     break;
                 case KC_HOME:
                 case KC_PAGE_UP:
                 case KC_END:
                 case KC_PAGE_DOWN:
+                case A(KC_F4):
+                case C(KC_F4):
                     jp_rbg_matrix_set(index, rgb_purple);
                     break;
                 default:
@@ -471,3 +522,31 @@ bool rgb_matrix_indicators_advanced_user(uint8_t led_min, uint8_t led_max) {
 
     return false;
 }
+
+bool caps_word_press_user(uint16_t keycode) {
+    switch (keycode) {
+        // Keycodes that continue Caps Word, with shift applied.
+        // ÄÖÜ are handled in `process_record_user`.
+        case KC_A ... KC_Z:
+            add_weak_mods(MOD_BIT(KC_LSFT));
+            return true;
+
+        // Keycodes that continue Caps Word, without shifting.
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_DEL:
+        case CH_MINS:
+        case CH_UNDS:
+        case CH_PLUS:
+            return true;
+
+        // Deactivate Caps Word.
+        default:
+            return false;
+    }
+}
+
+// void keyboard_post_init_user(void) {
+//     rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_THEJP);
+//     rgb_matrix_sethsv_noeeprom(HSV_OFF);
+// }

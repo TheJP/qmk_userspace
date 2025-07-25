@@ -1,0 +1,13 @@
+#include "jp_util.h"
+#include "rgb_matrix.h"
+
+rgb_t jp_adjusted_colour(hsv_t colour) {
+    if (colour.v > rgb_matrix_get_val()) {
+        colour.v = rgb_matrix_get_val();
+    }
+    return hsv_to_rgb(colour);
+}
+
+void jp_rbg_matrix_set(int index, rgb_t colour) {
+    rgb_matrix_set_color(index, colour.r, colour.g, colour.b);
+}
