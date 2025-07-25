@@ -1,1 +1,4 @@
 #define BOTH_SHIFTS_TURNS_ON_CAPS_WORD
+
+// Define custom transaction ids.
+#define SPLIT_TRANSACTION_IDS_USER JP_SYNC_CAPS_KEY_STATE

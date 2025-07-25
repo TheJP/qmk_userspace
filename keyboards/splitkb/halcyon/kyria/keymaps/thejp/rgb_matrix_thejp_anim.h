@@ -15,7 +15,7 @@ static bool jp_custom_effect(effect_params_t* params, rgb_t rgb_upper) {
 
     for (uint8_t i = led_min; i < led_max; i++) {
         if (HAS_ANY_FLAGS(g_led_config.flags[i], LED_FLAG_UNDERGLOW)) {
-            jp_rbg_matrix_set(i, is_caps_word_on() ? rgb_purple : rgb_green);
+            jp_rbg_matrix_set(i, jp_get_caps_key_state() ? rgb_purple : rgb_green);
         } else if (HAS_ANY_FLAGS(g_led_config.flags[i], (LED_FLAG_MODIFIER | LED_FLAG_KEYLIGHT | LED_FLAG_INDICATOR))) {
             jp_rbg_matrix_set(i, rgb_upper);
         }

@@ -3,6 +3,7 @@
 
 #include QMK_KEYBOARD_H
 #include "keymap_swiss_de.h"
+#include "transactions.h"
 #include "jp_util.h"
 
 enum layers {
@@ -546,7 +547,19 @@ bool caps_word_press_user(uint16_t keycode) {
     }
 }
 
-// void keyboard_post_init_user(void) {
-//     rgb_matrix_mode_noeeprom(RGB_MATRIX_CUSTOM_THEJP);
-//     rgb_matrix_sethsv_noeeprom(HSV_OFF);
-// }
+void caps_word_set_user(bool active) {
+    jp_set_caps_key_state(active);
+    if (is_keyboard_master()) {
+        uint8_t message_to_puppet = active ? 1 : 0;
+        transaction_rpc_send(JP_SYNC_CAPS_KEY_STATE, sizeof(message_to_puppet), &message_to_puppet);
+    }
+}
+
+void jp_sync_caps_key_state_puppet_handler(uint8_t in_buflen, const void* in_data, uint8_t out_buflen, void* out_data) {
+    const uint8_t *caps_key_state = (const uint8_t*)in_data;
+    jp_set_caps_key_state(*caps_key_state != 0);
+}
+
+void keyboard_post_init_user(void) {
+    transaction_register_rpc(JP_SYNC_CAPS_KEY_STATE, jp_sync_caps_key_state_puppet_handler);
+}
